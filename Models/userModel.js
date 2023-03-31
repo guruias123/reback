@@ -6,7 +6,7 @@ const userSchema = new Schema({
     type: {type: String, default: "user"},
     firstName: {type: String},
     lastName: {type: String},
-    age: {type: String},
+    dob: {type: String},
     email: {type: String, required: true},
 }, { timestamps: true });
 

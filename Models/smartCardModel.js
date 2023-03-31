@@ -3,13 +3,20 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const smartCardSchema = new Schema({
+    
     userId: {
         type: Schema.Types.ObjectId,
         res: "User"
     },
+    // image:{
+    //     data: Buffer,
+    //     contentType: String
+    // },
     fileName: {
         type: String,
-        default: "untitled"
+        // default: "untitled"
+        // data: Buffer,
+        // contentType: String
     },
     contact: {
         firstName: {type: String},

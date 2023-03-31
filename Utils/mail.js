@@ -1,21 +1,26 @@
 import nodemailer from 'nodemailer';
 
 let mailTransporter = nodemailer.createTransport({
-    service: 'gmail',
-    host: "smtp.mailtrap.io",
-    port: 2525,
-    secure: false,
+    service: 'hostinger',
+    // host: "smtp.mailtrap.io",
+    host: "smtp.hostinger.com",
+    port: 465,
+    secure: true,
     auth: {
-        user: 'rienzecv@gmail.com',
-        pass: 'ijsesbqkzkkiadwe'
+        // user: 'rienzecv@gmail.com',
+        // // pass: 'ijsesbqkzkkiadwe'
+        // pass:'xyz@97262'
+        user: 'mail@ganeshswami.gs',
+        pass: 'mail@1234Z'
     }
 });
  
 const email = (otp, mail) => {
-    let mailDetails = {                                                                                                                                                                                                                            
-        from: process.env.MAIL_ID,  
+    let mailDetails = {
+        // process.env.MAIL_ID                                                                                                                                                                                                                            
+        from: "mail@ganeshswami.gs",  
         to: mail,
-        subject: 'Verifivation Mail',
+        subject: 'Verification Mail',
         text: `OTP - ${otp}`
     };
     console.log({mail})

@@ -1,8 +1,9 @@
-import OTP from "../Models/otp.js";
-import User from "../Models/userModel.js";
-import { bcryptPassword, comparePassword } from "../Utils/bcrypt.js";
-import sendMail from "../Utils/mail.js";
-import { createtoken } from "../Utils/token.js";
+import { mongo } from "mongoose";
+import OTP from "../../Models/otp.js";
+import User from "../../Models/userModel.js";
+// import { bcryptPassword, comparePassword } from "../Utils/bcrypt.js";
+import sendMail from "../../Utils/mail.js";
+import { createtoken } from "../../Utils/token.js";
 
 export const sendMailForVerification = async(req, res) => {
     const {email, type} = req.body;
@@ -52,14 +53,15 @@ export const verifyOtp = async(req, res) => {
 export const signup = async (req, res) => {
     try {
         console.log(req.body);
-        let {firstName, lastName, email, mobile, age} = req.body;
+        let {firstName, lastName, email, mobile, dob} = req.body;
+        console.log(">>",req.body);
         const userFind = await User.findOne({email});
-        console.log(">>>>>",{userFind});
+        console.log(">>>>>>",{userFind});
         if(userFind) {
             return res.json({success: false, msg: "Account Already Exist"})
         }
-        const user = new User({ firstName, lastName, email, mobile, age});
-        // const user = req.body
+        const user = new User({ firstName, lastName, email, mobile, dob});
+        console.log(user);
         await user.save();
         const token = await createtoken(user._id, email, mobile);
         console.log({token});
@@ -87,6 +89,36 @@ export const signin = async (req, res) => {
     } catch (error) {
         console.log({error})
         res.json({success: false, msg: "something wnt wrong", err: error})
+    }
+}
+
+export const getUsers = async (req, res) => {
+    try {
+        const users = await User.find();
+        res.json({sucess: true, msg: "api running", users})
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const getoneuser = async (req, res) => {
+    const userId = mongo.ObjectId(req.params)
+    try {
+        const user = await User.findOne({_id:userId});
+        res.json({sucess: true, msg: "api running", user})
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const updateUser = async (req,res) => {
+    const userId = mongo.ObjectId(req.params)
+    console.log(userId);
+    try{
+        const updateUser = await User.updateMany({_id : userId},req.body)
+        return res.json({status:"success",msg:"updated successfull", data:updateUser})
+    } catch(err){
+        console.log(err);
     }
 }
 
