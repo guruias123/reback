@@ -11,7 +11,7 @@ let mailTransporter = nodemailer.createTransport({
         // // pass: 'ijsesbqkzkkiadwe'
         // pass:'xyz@97262'
         user: 'mail@ganeshswami.gs',
-        pass: 'mail@1234Z'
+        pass: 'mail@2345Z'
     }
 });
  
