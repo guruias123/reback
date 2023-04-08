@@ -3,9 +3,15 @@ import SmartCard from "../Models/smartCardModel.js";
 export const createSmartCard = async (req, res) => {
         try {
             req.body.userId = req.user._id;
+            
             const smartCard = await new SmartCard(req.body);
+            // const {contact} = req.body
+            // if(contact.email===" " && contact.phone===" "){
+            //     return res.json({success: false, msg: "please all mandatory fields", smartCard});
+            // }else{
             await smartCard.save();
             return res.json({success: true, msg: "Smart Card Data Updated Successfully", smartCard});
+            // }
         } catch (error) {
             console.log(error);
             return res.json({success: false, msg: "something went wrong"})

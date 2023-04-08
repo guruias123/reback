@@ -91,13 +91,13 @@ const smartCardSchema = new Schema({
         endedAt: {type: String},
         score: {type: String}
     }],
-    license: {
+    licenses: [{
         name: {type: String},
         number: {type: String},
         issuer: {type: String},
         validFrom: {type: String},
         validTill: {type: String}
-    },
+    }],
     courses: [{
         title: {type: String},
         institutionName: {type: String},

@@ -10,7 +10,7 @@ export const createtoken = async(id, email, mobile, password) => {
         mobile,
         password
     }, 
-    secretKey)
+    "secret")
     // , {expiresIn: process.env.JWT_EXPIRESIN})
     // console.log(process.env.JWT_SECRET);
     return token;

@@ -3,6 +3,7 @@ import SmartCard from "../Models/smartCardModel.js";
 export const createSmartCard = async (req, res) => {
         try {
             req.body.userId = req.user._id;
+            // console.log(">>>>>>>",req.body.userId,req.user._id);
             const smartCard = await new SmartCard(req.body);
             await smartCard.save();
             return res.json({success: true, msg: "Smart Card Data Updated Successfully", smartCard});
@@ -14,6 +15,9 @@ export const createSmartCard = async (req, res) => {
 
 export const getAllSmartCardsByUser = async (req, res) => {
     const userId = req.user._id;
+    // console.log("all by user",req.user._id,req.user,req);
+    console.log("all by user",req.user);
+    // console.log("all by user",req);
     try {
         const smartCards = await SmartCard.find({userId})
         return res.json({success: true, msg: "User Cards Sended Successfully", smartCards})

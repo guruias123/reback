@@ -8,15 +8,39 @@ import { createtoken } from "../../Utils/token.js";
 export const sendMailForVerification = async(req, res) => {
     const {email, type} = req.body;
     try {
+        // const userFind = await User.findOne({email});
         const otp = Math.floor(1000 + Math.random() * 9000);
-        await sendMail(otp, email)
-        // console.log({otp})
         const oneTimePassword = new OTP({
             otp,
             type
         })
-        await oneTimePassword.save();
+        if(type === "login"){
+            const userFind = await User.findOne({email});
+            if(!userFind){
+
+                return res.json({success: false, msg:"Account not exist create an account"})
+            }
+        else{
+            await sendMail(otp, email)
+            await oneTimePassword.save();
         return res.json({success: true, msg: "OTP Sent Successfully"})
+        }}
+
+        if(type === 'signup'){
+            await sendMail(otp, email)
+            await oneTimePassword.save();
+        return res.json({success: true, msg: "OTP Sent Successfully"})
+        }
+        
+        // const otp = Math.floor(1000 + Math.random() * 9000);
+        // await sendMail(otp, email)
+        // console.log({otp})
+        // const oneTimePassword = new OTP({
+        //     otp,
+        //     type
+        // })
+        // await oneTimePassword.save();
+        // return res.json({success: true, msg: "OTP Sent Successfully"})
     } catch (error) {
         console.log({error});
         res.json({success: false, msg: "something went wrong", err: error})
@@ -76,6 +100,7 @@ export const signin = async (req, res) => {
     const {email} = req.body;
     try {
         const userFind = await User.findOne({email});
+        console.log(userFind);
         if(!userFind) {
             return res.json({success: false, msg: "Account not exist create an account"})
         }
