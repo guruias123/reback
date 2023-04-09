@@ -1,4 +1,5 @@
 import { mongo } from "mongoose";
+import axios from 'axios'
 import OTP from "../../Models/otp.js";
 import User from "../../Models/userModel.js";
 // import { bcryptPassword, comparePassword } from "../Utils/bcrypt.js";
@@ -14,7 +15,9 @@ export const sendMailForVerification = async(req, res) => {
             otp,
             type
         })
+        console.log('otp sending');
         if(type === "login"){
+            console.log('login');
             const userFind = await User.findOne({email});
             if(!userFind){
 
@@ -27,9 +30,45 @@ export const sendMailForVerification = async(req, res) => {
         }}
 
         if(type === 'signup'){
-            await sendMail(otp, email)
-            await oneTimePassword.save();
-        return res.json({success: true, msg: "OTP Sent Successfully"})
+            console.log('signup');
+            // const response = await axios.post(`https://api.zerobounce.net/v2/validate?apikey=${api_key}&email=${email}`);
+            // const data = response.data;
+            // console.log(data);
+            // if (data.status === 'valid' && data.sub_status === 'mailbox_exists') {
+            //     console.log("inside signup");
+            //     await sendMail(otp, email)
+            //     await oneTimePassword.save();
+            //     return res.json({success: true, msg: "OTP Sent Successfully"})
+            // } else {
+            //     return res.json({success: false, msg: "mail don't have an account"})
+            // }
+            axios.post('https://api.zerobounce.net/v2/validate', {
+                // params: {
+                    api_key: 'dc32a0f6a86d42d0ac65e16fb68b4142',
+                    email: email
+                // }
+            }, {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            })
+            .then( async response => {
+                console.log(response.data);
+                if(response.data.status === 'valid'){
+                    await sendMail(otp, email)
+                    await oneTimePassword.save();
+                    return res.json({success: true, msg: "OTP Sent Successfully"})}
+                    else{
+                        return res.json({success: false, msg: "mail don't have an account, try with with different mail"})
+
+                    }
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        //     await sendMail(otp, email)
+        //     await oneTimePassword.save();
+        // return res.json({success: true, msg: "OTP Sent Successfully"})
         }
         
         // const otp = Math.floor(1000 + Math.random() * 9000);
