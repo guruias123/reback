@@ -11,5 +11,7 @@ route.get('/get-unique-smartcard/:smartCardId', authentication, authorization('u
 route.put('/update-smartcard/:smartCardId', authentication, authorization('user'), updateSmartCard);
 route.put('/update-smartcard-name/:smartCardId', authentication, authorization('user'), updateSmartCardName);
 route.delete('/delete-smartcard/:smartCardId', authentication, authorization('user'), deleteSmartCard);
+route.get('/get-unique1-smartcard/:smartCardId',getUniqueSmartCard);
+
 
 export default route;   

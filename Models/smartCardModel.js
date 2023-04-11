@@ -18,6 +18,12 @@ const smartCardSchema = new Schema({
         // data: Buffer,
         // contentType: String
     },
+    fileName1: {
+        type: String,
+        // default: "untitled"
+        // data: Buffer,
+        // contentType: String
+    },
     contact: {
         firstName: {type: String},
         lastName: {type: String},
@@ -136,6 +142,9 @@ const smartCardSchema = new Schema({
         dateOfBirth: {type: String},
         nationality: {type: String},
         passport: {type: String}
+    },
+    review: {
+        type: String
     }
 }, { timestamps: true });
 
